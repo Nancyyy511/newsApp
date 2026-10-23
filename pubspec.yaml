@@ -28,14 +28,29 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-
   flutter:
     sdk: flutter
+  flutter_native_splash: ^2.4.8
+
+  
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  google_fonts: ^8.2.1
+  flutter_svg: ^2.3.0
+  image_picker: ^1.2.1
   flutter_screenutil: ^5.9.3
+  sizer: ^3.1.3
+  flutter_gen: ^5.15.0
+  build_runner: ^2.15.1
+  provider: ^6.1.5+1
+  flutter_localizations:
+    sdk: flutter
+  shared_preferences: ^2.5.6
+  flutter_swipe_button: ^2.1.3
+  dio: ^5.11.1
+
 
 dev_dependencies:
   flutter_test:
@@ -52,12 +67,40 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
+
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: assets/images/news_logo.png
+  branding: assets/images/news_branding.png
+  color_dark: "#000F30"
+  image_dark: assets/images/news_logoDark.png
+  branding_dark: assets/images/news_brandingDark.png
+
+  android_12:
+    color: "#FFFFFF"
+    image: assets/images/news_logo.png
+    branding: assets/images/news_branding.png
+    color_dark: "#000F30"
+    image_dark: assets/images/news_logoDark.png
+    branding_dark: assets/images/news_brandingDark.png
+
+
+   
 flutter:
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/icons/
+
+  generate: true
+  
+
+
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:
