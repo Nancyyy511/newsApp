@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:news_app/common/app_text_styles.dart';
 import 'package:news_app/common/theme/app_colors.dart';
 import 'package:news_app/common/enums/category_enum.dart';
+import 'package:news_app/l10n/app_localizations.dart';
 
 class HomeCategoryCard extends StatelessWidget {
   final CategoryEnum category;
@@ -13,7 +14,11 @@ class HomeCategoryCard extends StatelessWidget {
     required this.onViewAll,
   });
 
-  Widget buildViewAllButton({required bool imageOnLeft, required bool isDark}) {
+  Widget buildViewAllButton({
+    required bool imageOnLeft,
+    required bool isDark,
+    required String viewAllText,
+  }) {
     final buttonColor = isDark
         ? AppColors.primaryBlackColor
         : AppColors.primaryWhiteColor;
@@ -42,7 +47,7 @@ class HomeCategoryCard extends StatelessWidget {
                 children: [
                   if (!imageOnLeft) const SizedBox(width: 30),
                   Text(
-                    'View All',
+                    viewAllText,
                     style: AppTextStyles.styleW500S16.copyWith(
                       color: buttonTextColor,
                       fontSize: 18,
@@ -84,7 +89,7 @@ class HomeCategoryCard extends StatelessWidget {
         ? AppColors.primaryBlackColor
         : AppColors.primaryWhiteColor;
 
-    final title = category.title;
+    final title = category.getTitle(context);
     final imageOnLeft = category.imageOnLeft;
 
     final imagePath = isDark ? category.darkImage : category.lightImage;
@@ -137,6 +142,7 @@ class HomeCategoryCard extends StatelessWidget {
               child: buildViewAllButton(
                 imageOnLeft: imageOnLeft,
                 isDark: isDark,
+                viewAllText: AppLocalizations.of(context)!.viewAll,
               ),
             ),
           ),

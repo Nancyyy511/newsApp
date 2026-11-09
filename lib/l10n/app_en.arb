@@ -1,0 +1,23 @@
+{
+  "appTitle": "News App",
+  "home": "Home",
+  "settings": "Settings",
+  "language": "Language",
+  "theme": "Theme",
+  "light": "Light",
+  "dark": "Dark",
+  "system": "System",
+  "english": "English",
+  "arabic": "Arabic",
+  "goToHome": "Go To Home",
+  "viewAll": "View All",
+  "general": "General",
+  "business": "Business",
+  "sports": "Sports",
+  "technology": "Technology",
+  "entertainment": "Entertainment",
+  "health": "Health",
+  "science": "Science",
+  "by": "By",
+  "unknown": "Unknown"
+}

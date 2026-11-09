@@ -1,0 +1,23 @@
+{
+  "appTitle": "تطبيق الأخبار",
+  "home": "الرئيسية",
+  "settings": "الإعدادات",
+  "language": "اللغة",
+  "theme": "المظهر",
+  "light": "فاتح",
+  "dark": "داكن",
+  "system": "حسب إعدادات الجهاز",
+  "english": "الإنجليزية",
+  "arabic": "العربية",
+  "goToHome": "الذهاب للرئيسية",
+  "viewAll": "عرض الكل",
+  "general": "عام",
+  "business": "أعمال",
+  "sports": "رياضة",
+  "technology": "تكنولوجيا",
+  "entertainment": "ترفيه",
+  "health": "صحة",
+  "science": "علوم",
+  "by": "بواسطة",
+  "unknown": "غير معروف"
+}

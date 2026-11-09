@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:news_app/common/app_text_styles.dart';
 import 'package:news_app/common/enums/category_enum.dart';
-import 'package:news_app/screens/provider/main_screen_provider.dart';
-import 'package:news_app/screens/widgets/home/home_category_card.dart';
-import 'package:provider/provider.dart';
+import 'package:news_app/news/view_model/main_layer_cubit/main_layer_cubit.dart';
+import 'package:news_app/news/view/screens/widgets/home/home_category_card.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -72,9 +72,9 @@ class HomeView extends StatelessWidget {
   }
 
   void _openCategory(BuildContext context, CategoryEnum category) {
-    Provider.of<MainScreenProvider>(
-      context,
-      listen: false,
-    ).changeCategory(category);
+    // The cubit stores the selected category (which switches the view and the
+    // AppBar title) and loads its sources. Call it only once: every call
+    // sends a new sources request.
+    context.read<MainLayerCubit>().selectCategory(category);
   }
 }

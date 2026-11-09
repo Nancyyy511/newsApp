@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:news_app/common/app_text_styles.dart';
 import 'package:news_app/common/theme/app_colors.dart';
-import 'package:news_app/models/news_model.dart';
+import 'package:news_app/news/model/data_models/article_response_model/article_response_model.dart';
+import 'package:timeago/timeago.dart' as timeago;
+import 'package:cached_network_image/cached_network_image.dart';
 
 class NewsCard extends StatelessWidget {
-  final NewsModel news;
+  final Article articles;
   final VoidCallback? onTap;
 
-  const NewsCard({super.key, required this.news, this.onTap});
+  const NewsCard({super.key, required this.articles, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,7 @@ class NewsCard extends StatelessWidget {
             const SizedBox(height: 10),
 
             Text(
-              news.title,
+              articles.title ?? '',
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: AppTextStyles.styleW700S22.copyWith(color: textColor),
@@ -65,7 +67,7 @@ class NewsCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    'By : ${news.author?.trim().isNotEmpty == true ? news.author : 'Unknown'}',
+                    'By : ${articles.author?.trim().isNotEmpty == true ? articles.author : 'Unknown'}',
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: AppTextStyles.styleW500S16.copyWith(
@@ -77,7 +79,11 @@ class NewsCard extends StatelessWidget {
                 const SizedBox(width: 8),
 
                 Text(
-                  _timeAgo(news.publishedAt),
+                  timeago.format(
+                    DateTime.tryParse(articles.publishedAt ?? '') ??
+                        DateTime.now(),
+                    locale: 'en',
+                  ),
                   style: AppTextStyles.styleW500S16.copyWith(
                     color: secondaryTextColor,
                   ),
@@ -91,65 +97,48 @@ class NewsCard extends StatelessWidget {
   }
 
   Widget _buildImage() {
-    final imageUrl = news.imageUrl;
+    final imageUrl = articles.urlToImage?.trim() ?? '';
 
-    if (imageUrl == null || imageUrl.isEmpty) {
-      return const ColoredBox(
-        color: Colors.black12,
-        child: Center(
-          child: Icon(
-            Icons.image_not_supported_outlined,
-            size: 40,
-            color: Colors.grey,
-          ),
+    if (imageUrl.isEmpty) {
+      return _imagePlaceholder(
+        const Icon(
+          Icons.image_not_supported_outlined,
+          size: 40,
+          color: Colors.grey,
         ),
       );
     }
 
-    return Image.network(
-      imageUrl,
+    return CachedNetworkImage(
+      imageUrl: imageUrl,
       fit: BoxFit.cover,
-      width: 1.sw,
-      height: 220.h,
+      width: double.infinity,
 
-      errorBuilder: (context, error, stackTrace) {
-        return const ColoredBox(
-          color: Colors.black12,
-          child: Center(
-            child: Icon(
-              Icons.broken_image_outlined,
-              size: 40,
-              color: Colors.grey,
-            ),
-          ),
+      // Show loading indicator while downloading the image
+      placeholder: (context, url) {
+        return _imagePlaceholder(
+          const CircularProgressIndicator(strokeWidth: 3, color: Colors.blue),
         );
       },
-      loadingBuilder: (context, child, loadingProgress) {
-        if (loadingProgress == null) return child;
 
-        return const ColoredBox(
-          color: Colors.black12,
-          child: Center(child: CircularProgressIndicator()),
+      // Show an icon if loading fails
+      errorWidget: (context, url, error) {
+        debugPrint('Failed to load image: $url');
+        debugPrint('Image error: $error');
+
+        return _imagePlaceholder(
+          const Icon(Icons.broken_image_outlined, size: 40, color: Colors.grey),
         );
       },
     );
   }
 
-  String _timeAgo(DateTime date) {
-    final difference = DateTime.now().difference(date);
-
-    if (difference.isNegative) return 'Just now';
-    if (difference.inSeconds < 60) return 'Just now';
-    if (difference.inMinutes < 60) {
-      return '${difference.inMinutes} minutes ago';
-    }
-    if (difference.inHours < 24) {
-      return '${difference.inHours} hours ago';
-    }
-    if (difference.inDays < 7) {
-      return '${difference.inDays} days ago';
-    }
-
-    return '${date.day}/${date.month}/${date.year}';
+  Widget _imagePlaceholder(Widget child) {
+    return SizedBox.expand(
+      child: ColoredBox(
+        color: Colors.black12,
+        child: Center(child: child),
+      ),
+    );
   }
 }

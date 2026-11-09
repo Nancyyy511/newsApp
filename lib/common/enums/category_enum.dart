@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:news_app/common/app_data.dart';
+import 'package:news_app/l10n/app_localizations.dart';
 
 enum CategoryEnum {
   general,
@@ -11,22 +13,23 @@ enum CategoryEnum {
 }
 
 extension CategoryEnumExtension on CategoryEnum {
-  String get title {
+  String getTitle(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     switch (this) {
       case CategoryEnum.general:
-        return 'General';
+        return loc.general;
       case CategoryEnum.business:
-        return 'Business';
+        return loc.business;
       case CategoryEnum.sports:
-        return 'Sports';
+        return loc.sports;
       case CategoryEnum.technology:
-        return 'Technology';
+        return loc.technology;
       case CategoryEnum.entertainment:
-        return 'Entertainment';
+        return loc.entertainment;
       case CategoryEnum.health:
-        return 'Health';
+        return loc.health;
       case CategoryEnum.science:
-        return 'Science';
+        return loc.science;
     }
   }
 
