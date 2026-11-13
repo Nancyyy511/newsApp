@@ -4,11 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:news_app/common/theme/app_theme.dart';
 import 'package:news_app/l10n/app_localizations.dart';
+import 'package:news_app/news/service_locator/di.dart';
 import 'package:news_app/news/view/screens/main_screen.dart';
 import 'package:news_app/news/view_model/app_settings_cubit/app_settings_cubit.dart';
 import 'package:news_app/news/view_model/app_settings_cubit/app_settings_state.dart';
 
 void main() {
+  configureDependencies();
   runApp(
     // App-wide settings (theme and language) are needed by the whole app.
     // MainLayerCubit is provided lower, in MainScreen.

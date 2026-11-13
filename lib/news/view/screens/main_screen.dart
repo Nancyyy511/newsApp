@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:news_app/common/app_data.dart';
 import 'package:news_app/common/enums/category_enum.dart';
 import 'package:news_app/l10n/app_localizations.dart';
+import 'package:news_app/news/service_locator/di.dart';
+
 import 'package:news_app/news/view_model/main_layer_cubit/main_layer_cubit.dart';
 import 'package:news_app/news/view_model/main_layer_cubit/main_layer_state.dart';
 import 'package:news_app/news/view/screens/sub_views/home_view.dart';
@@ -22,7 +24,7 @@ class MainScreen extends StatelessWidget {
     // final textColor = Theme.of(context).colorScheme.onSurface;
 
     return BlocProvider(
-      create: (context) => MainLayerCubit(),
+      create: (context) => getIt<MainLayerCubit>(),
       child: BlocBuilder<MainLayerCubit, MainLayerState>(
         // Only the selected category matters here (AppBar title and
         // Home/Details view), so do not rebuild for sources/articles states.

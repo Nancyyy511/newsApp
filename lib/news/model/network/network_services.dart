@@ -1,13 +1,16 @@
 import 'package:dio/dio.dart';
+import 'package:injectable/injectable.dart';
 import 'package:news_app/common/errors/error_model.dart';
 import 'package:news_app/news/model/data_models/article_response_model/article_response_model.dart';
 import 'package:news_app/news/model/data_models/source_model.dart';
 import 'package:news_app/common/network/end_points.dart';
 import 'package:news_app/common/app_consts.dart';
 import 'package:flutter/foundation.dart';
+import 'package:news_app/news/model/data_source/main_layer_source.dart';
 
-class NetworkServices {
-  static final Dio dio = Dio(
+@Injectable(as: MainLayerDataSource)
+class NetworkDataSource extends MainLayerDataSource {
+  final Dio dio = Dio(
     BaseOptions(
       baseUrl: AppConsts.baseUrl,
       queryParameters: {'apiKey': AppConsts.apiKey},
@@ -16,9 +19,7 @@ class NetworkServices {
 
   // Get Sources by Category
 
-  static Future<(ErrorModel?, List<Sources>?)> getSources(
-    String category,
-  ) async {
+  Future<(ErrorModel?, List<Sources>?)> getSources(String category) async {
     try {
       final Response response = await dio.get(
         EndPoints.sourcesEndpoint,
@@ -54,9 +55,7 @@ class NetworkServices {
 
   // Get Articles
 
-  static Future<(ErrorModel?, List<Article>?)> getArticles(
-    String sourceId,
-  ) async {
+  Future<(ErrorModel?, List<Article>?)> getArticles(String sourceId) async {
     try {
       final Response response = await dio.get(
         EndPoints.articlesEndpoint,

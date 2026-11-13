@@ -1,16 +1,22 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:news_app/common/enums/category_enum.dart';
 import 'package:news_app/news/model/data_models/article_response_model/article_response_model.dart';
 import 'package:news_app/news/model/data_models/source_model.dart';
-import 'package:news_app/news/model/network/network_services.dart';
+//import 'package:news_app/news/model/network/network_services.dart';
+import 'package:news_app/news/repository/main_layer_reporsitery.dart';
 import 'package:news_app/news/view_model/main_layer_cubit/main_layer_state.dart';
 
+@injectable
 class MainLayerCubit extends Cubit<MainLayerState> {
-  MainLayerCubit() : super(MainLayerInitialState());
+  MainLayerCubit({required this._mainLayerRepository})
+    : super(MainLayerInitialState());
+  final MainLayerRepository _mainLayerRepository;
 
   // The sources of the selected category. The tabs are built from this list,
   // so they stay on screen while articles are loading.
   List<Sources> sources = [];
+  CategoryEnum? selectedCategory;
 
   // The source (tab) whose articles the user is looking at right now.
   String? selectedSourceId;
@@ -40,9 +46,10 @@ class MainLayerCubit extends Cubit<MainLayerState> {
   }
 
   Future<void> getSources(CategoryEnum category) async {
+    selectedCategory = category;
     emit(GetSourcesLoading(categoryEnum: category));
 
-    final (error, sourcesList) = await NetworkServices.getSources(
+    final (error, sourcesList) = await _mainLayerRepository.getSources(
       category.name,
     );
 
@@ -88,7 +95,7 @@ class MainLayerCubit extends Cubit<MainLayerState> {
 
     emit(GetArticlesLoading(categoryEnum: category, sourceId: sourceId));
 
-    final (error, articles) = await NetworkServices.getArticles(sourceId);
+    final (error, articles) = await _mainLayerRepository.getArticles(sourceId);
 
     if (isClosed) return;
 
